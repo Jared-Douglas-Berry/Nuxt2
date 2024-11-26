@@ -1,35 +1,37 @@
 <template>
   <div class="w-full max-w-xl">
     <ModalHeader>
-      {{ $localeString('issues.editTodo', 'editIssue') }}
+      {{ $t('issues.editTodo', 'editIssue') }}
     </ModalHeader>
     <ModalContent>
       <SelectInput v-model="label" :options="filteredLabelOptions" />
     </ModalContent>
     <ModalFooter>
       <BaseButton
-        :text="$localeString('global.cancel', 'cancel')"
+        :text="$t('global.cancel', 'cancel')"
         :large="true"
-        @click.native="modalStore.closeModal()"
+        @click="modalStore.closeModal()"
       />
-      <BaseButton :text="$localeString('global.save', 'save')" :large="true" :primary="true" @click.native="save" />
+      <BaseButton :text="$t('global.save', 'save')" :large="true" :primary="true" @click="save" />
     </ModalFooter>
   </div>
 </template>
 
 <script setup>
-import { ref } from '@nuxtjs/composition-api'
-import { useIssueStore } from '@/stores/IssueStore'
-import { useModalStore } from '@/stores/ModalStore'
-import { useOverviewIssue } from '@/composables/useOverviewIssue'
+import {ref, computed} from 'vue'
+import {useIssueStore} from '@/stores/IssueStore'
+import {useModalStore} from '@/stores/ModalStore'
+import {useOverviewIssue} from '@/composables/useOverviewIssue'
 
 const issueStore = useIssueStore()
 const modalStore = useModalStore()
 const label = ref(issueStore?.issue?.label)
-const { labelOptions } = useOverviewIssue()
+const {labelOptions} = useOverviewIssue()
 
-const filteredLabelOptions = labelOptions.value?.filter(
-  (option) => option?.type?.includes(modalStore.modalMessage.type) || labelOptions.value
+const filteredLabelOptions = computed(() =>
+  labelOptions.value?.filter(
+    (option) => option?.type?.includes(modalStore.modalMessage.type) || labelOptions.value
+  )
 )
 
 function save() {

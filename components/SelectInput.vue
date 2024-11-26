@@ -39,29 +39,29 @@
       v-if="valueNotInOptions && allowValueNotInOptions"
       class="mt-2 text-xs text-gray-400"
     >
-      <span
-        >The original value is not listed in the list of viable options. Please
+      <span>
+        The original value is not listed in the list of viable options. Please
         be aware that changing the option will result in the loss of the
-        original value.</span
-      >
+        original value.
+      </span>
     </div>
   </div>
 </template>
 
 <script setup>
-import { defineProps, defineEmits, computed } from "@nuxtjs/composition-api";
-const emit = defineEmits(["input"]);
+import { defineProps, defineEmits, computed } from 'vue';
 
+const emit = defineEmits(['update:modalValue']);
 const props = defineProps({
   value: {
     type: [String, Object, Number],
     required: false,
-    default: "",
+    default: '',
   },
   placeholder: {
     type: String,
     required: false,
-    default: "-",
+    default: '-',
   },
   options: {
     type: Array,
@@ -107,17 +107,17 @@ const selectedOption = computed({
     }
 
     const value =
-      typeof props.value === "object" && props.value
+      typeof props.value === 'object' && props.value
         ? props.value.id
         : props.value;
-    return value || "";
+    return value || '';
   },
   set(value) {
     if (props.returnObject) {
-      emit("input", value);
+      emit('update:modalValue', value);
     } else {
-      const valueToEmit = typeof value === "object" && value ? value.id : value;
-      emit("input", valueToEmit);
+      const valueToEmit = typeof value === 'object' && value ? value.id : value;
+      emit('update:modalValue', valueToEmit);
     }
   },
 });
